@@ -13,7 +13,8 @@ class SelectionSortPage extends StatefulWidget {
 }
 
 class _SelectionSortPageState extends State<SelectionSortPage> {
-  List<List> _list;
+  List<int> _list;
+  List<MaterialColor> _colors;
   int n = 40;
   int highestNumber = 50;
 
@@ -21,40 +22,43 @@ class _SelectionSortPageState extends State<SelectionSortPage> {
   void initState() {
     super.initState();
     _list = randomNumbersList(n: n, highestNumber: highestNumber);
+    _colors = randomNumberColorsList(n: n);
     setState(() {});
   }
 
   void newList() {
     setState(() {
       _list = randomNumbersList(n: n, highestNumber: highestNumber);
+      _colors = randomNumberColorsList(n: n);
     });
   }
 
   void sortList() async {
+    /// selection sort
     for (int i = 0; i < _list.length - 1; i++) {
       /// minimum index, gets exchanged with another if its smaller
-      int min_index = i;
+      int minindex = i;
 
       for (int j = i + 1; j < _list.length; j++) {
         if (this.mounted) {
           setState(() {
-            _list[j][1] = Colors.red;
-            _list[min_index][1] = Colors.red;
+            _colors[j] = Colors.red;
+            _colors[minindex] = Colors.red;
           });
         }
         if (this.mounted) {
           await Future.delayed(Duration(milliseconds: 50));
-          _list[j][1] = Colors.teal;
-          _list[min_index][1] = Colors.teal;
+          _colors[j] = Colors.teal;
+          _colors[minindex] = Colors.teal;
         }
-        if (_list[j][0] < _list[min_index][0]) {
-          min_index = j;
+        if (_list[j] < _list[minindex]) {
+          minindex = j;
         }
       }
 
-      var tmp = _list[min_index][0];
-      _list[min_index][0] = _list[i][0];
-      _list[i][0] = tmp;
+      var tmp = _list[minindex];
+      _list[minindex] = _list[i];
+      _list[i] = tmp;
       if (this.mounted) {
         setState(() {});
       }
@@ -94,9 +98,9 @@ class _SelectionSortPageState extends State<SelectionSortPage> {
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Container(
-                      height: (height * .3) * (_list[index][0] / highestNumber),
+                      height: (height * .3) * (_list[index] / highestNumber),
                       width: width / highestNumber.toDouble(),
-                      color: _list[index][1],
+                      color: _colors[index],
                       margin: EdgeInsets.all(1.0),
                     ),
                   ],

@@ -13,7 +13,8 @@ class BubbleSortPage extends StatefulWidget {
 }
 
 class _BubbleSortPageState extends State<BubbleSortPage> {
-  List<List> _list;
+  List<int> _list;
+  List<MaterialColor> _colors;
   int n = 40;
   int highestNumber = 50;
 
@@ -21,33 +22,36 @@ class _BubbleSortPageState extends State<BubbleSortPage> {
   void initState() {
     super.initState();
     _list = randomNumbersList(n: n, highestNumber: highestNumber);
+    _colors = randomNumberColorsList(n: n);
     setState(() {});
   }
 
   void newList() {
     setState(() {
       _list = randomNumbersList(n: n, highestNumber: highestNumber);
+      _colors = randomNumberColorsList(n: n);
     });
   }
 
   void sortList() async {
+    /// buble sort
     for (int i = 0; i < _list.length - 1; i++) {
       for (int j = 0; j < _list.length - i - 1; j++) {
-        if (_list[j][0] > _list[j + 1][0]) {
+        if (_list[j] > _list[j + 1]) {
           if (this.mounted) {
             setState(() {
-              _list[j][1] = Colors.red;
-              _list[j + 1][1] = Colors.red;
+              _colors[j] = Colors.red;
+              _colors[j + 1] = Colors.red;
             });
           }
-          var tmp = _list[j][0];
-          _list[j][0] = _list[j + 1][0];
-          _list[j + 1][0] = tmp;
+          var tmp = _list[j];
+          _list[j] = _list[j + 1];
+          _list[j + 1] = tmp;
           if (this.mounted) {
             await Future.delayed(Duration(milliseconds: 50));
             setState(() {
-              _list[j][1] = Colors.teal;
-              _list[j + 1][1] = Colors.teal;
+              _colors[j] = Colors.teal;
+              _colors[j + 1] = Colors.teal;
             });
           }
         }
@@ -88,9 +92,9 @@ class _BubbleSortPageState extends State<BubbleSortPage> {
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Container(
-                      height: (height * .3) * (_list[index][0] / highestNumber),
+                      height: (height * .3) * (_list[index] / highestNumber),
                       width: width / highestNumber.toDouble(),
-                      color: _list[index][1],
+                      color: _colors[index],
                       margin: EdgeInsets.all(1.0),
                     ),
                   ],

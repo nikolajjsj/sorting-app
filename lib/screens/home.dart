@@ -24,9 +24,11 @@ class HomePage extends StatelessWidget {
           return SortCard(
             title: _sortingAlgorhitms[index].title,
             shortDescription: _sortingAlgorhitms[index].shortDescription,
-            onTap: () {
-              Navigator.of(context).push(_sortingAlgorhitms[index].route);
-            },
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => _sortingAlgorhitms[index].page,
+              ),
+            ),
           );
         },
       ),

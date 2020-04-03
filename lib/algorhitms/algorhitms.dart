@@ -7,19 +7,19 @@ var bubbleSort = Algorhitm(
   title: 'Bubble Sort',
   shortDescription:
       'Bubble sort is the simplest sorting algorhitm, but also very slow!',
-  route: BubbleSortPage.route(),
+  page: BubbleSortPage(),
 );
 
 var selectionSort = Algorhitm(
   title: 'Selection Sort',
   shortDescription:
       'Continously finds the minimum element, and swap this with the beginning element of the array.',
-  route: SelectionSortPage.route(),
+  page: SelectionSortPage(),
 );
 
 var mergeSort = Algorhitm(
   title: 'Merge Sort',
   shortDescription:
-      'Divides the inpiut array in two halves, calls itself (recursion) and then merges the two sorted halves.',
-  route: MergeSortPage.route(),
+      'Divides the inpiut array in two halves, calls itself (recursively) and then merges the two sorted halves.',
+  page: MergeSortPage(),
 );

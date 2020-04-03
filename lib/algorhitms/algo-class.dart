@@ -1,15 +1,13 @@
-import 'package:flutter/material.dart';
-
 class Algorhitm {
   Algorhitm({
     this.title,
     this.description,
     this.shortDescription,
-    this.route,
+    this.page,
   });
 
   String title;
   String shortDescription;
   String description;
-  Route route;
+  var page;
 }
