@@ -1,9 +1,15 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sorting/provider/algo_provider.dart';
 import 'package:sorting/screens/home.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(ChangeNotifierProvider<AlgorhitmNotifier>(
+    create: (BuildContext context) => AlgorhitmNotifier(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
