@@ -1,6 +1,7 @@
 import 'package:sorting/algorhitms/algo-class.dart';
 import 'package:sorting/screens/algorhitms/bubblesort.dart';
 import 'package:sorting/screens/algorhitms/mergeSort.dart';
+import 'package:sorting/screens/algorhitms/recur_bubblesort.dart';
 import 'package:sorting/screens/algorhitms/selectionSort.dart';
 
 var bubbleSort = Algorhitm(
@@ -8,6 +9,13 @@ var bubbleSort = Algorhitm(
   shortDescription:
       'Bubble sort is the simplest sorting algorhitm, but also very slow!',
   page: BubbleSortPage(),
+);
+
+var recursiveBubbleSort = Algorhitm(
+  title: 'Recursive Bubble Sort',
+  shortDescription:
+      'A Recursive example of Bubble sort',
+  page: RecursiveBubbleSortPage(),
 );
 
 var selectionSort = Algorhitm(

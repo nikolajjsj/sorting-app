@@ -7,6 +7,7 @@ class HomePage extends StatelessWidget {
   /// list of the algorhitms showed on this page
   final List _sortingAlgorhitms = [
     bubbleSort,
+    recursiveBubbleSort,
     selectionSort,
     mergeSort,
   ];
