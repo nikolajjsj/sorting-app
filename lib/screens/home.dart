@@ -11,7 +11,10 @@ class HomePage extends StatelessWidget {
   final List _sortingAlgorhitms = [
     bubbleSort,
     recursiveBubbleSort,
+    cocktailSort,
     selectionSort,
+    insertionSort,
+    pigeonholeSort,
     mergeSort,
   ];
 
@@ -30,6 +33,7 @@ class HomePage extends StatelessWidget {
           return SortCard(
             title: _sortingAlgorhitms[index].title,
             shortDescription: _sortingAlgorhitms[index].shortDescription,
+            timeComplexity: _sortingAlgorhitms[index].timeComplexity,
             onTap: () async {
               alNotifier.generateLists();
               Navigator.of(context).push(
@@ -37,6 +41,7 @@ class HomePage extends StatelessWidget {
                   builder: (context) => SortPages(
                     title: _sortingAlgorhitms[index].title,
                     shortDescription: _sortingAlgorhitms[index].shortDescription,
+                    url: _sortingAlgorhitms[index].url,
                   ),
                 ),
               );

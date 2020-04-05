@@ -5,11 +5,13 @@ class SortCard extends StatelessWidget {
   SortCard({
     @required this.title,
     @required this.shortDescription,
+    @required this.timeComplexity,
     @required this.onTap,
   });
 
   final String title;
   final String shortDescription;
+  final String timeComplexity;
   final Function onTap;
 
   @override
@@ -21,16 +23,21 @@ class SortCard extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(title, style: TextStyles.title),
-              SizedBox(height: 10.0),
-              Text(
-                shortDescription,
-                style: TextStyles.body,
-              ),
-            ],
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(title, style: TextStyles.title),
+                    Text(timeComplexity, style: TextStyles.body)
+                  ],
+                ),
+                SizedBox(height: 10.0),
+                Text(shortDescription, style: TextStyles.body),
+              ],
+            ),
           ),
         ),
       ),

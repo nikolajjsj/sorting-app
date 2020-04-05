@@ -12,6 +12,7 @@ dependencies:
   animations: ^1.0.0+5
   provider: ^4.0.4
   numberpicker: ^1.2.0
+  url_launcher: ^5.4.2
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.3"

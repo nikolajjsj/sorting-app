@@ -19,38 +19,36 @@ class AlgorhitmNotifier with ChangeNotifier {
   int get functionDelay => _functionDelay;
 
   /// setter functions
-  set setListLength(listLength) => _n = listLength;
-  set setMaxGenNumb(highestNumber) => _maxGeneratedNumber = highestNumber;
-  set setFunctionDelay(functionDelay) => _functionDelay = functionDelay;
+  setListLength(listLength) {
+    _n = listLength;
+    generateLists();
+  }
 
-  /// generate a new random number and color list
-  generateLists() {
-    _generateListAndColors(n: _n, highestNumber: _maxGeneratedNumber);
+  setMaxGenNumb(highestNumber) {
+    _maxGeneratedNumber = highestNumber;
     notifyListeners();
   }
 
-  /// generates random number, and colors list
-  _generateListAndColors({@required int n, @required int highestNumber}) {
+  setFunctionDelay(functionDelay) {
+    _functionDelay = functionDelay;
+    notifyListeners();
+  }
+
+  /// generate a new random number and color list
+  generateLists() {
     if (_list.length > 0) {
       _list.clear();
       _colors.clear();
     }
-
-    var random = Random();
-    for (var i = 1; i < n; i++) {
-      int randNumber = random.nextInt(highestNumber) + 1;
+    for (var i = 1; i < _n; i++) {
+      int randNumber = Random().nextInt(_maxGeneratedNumber) + 1;
       _list.add(randNumber);
       _colors.add(Colors.teal);
     }
+    notifyListeners();
   }
 
-  ///
-  /// sorting functions
-  ///
-  // startSort(Future sortFunction) {
-  //   sortFunction;
-  // }
-
+  /// sorting functions ///
   Future bubbleSort() async {
     /// buble sort
     for (int i = 0; i < _list.length - 1; i++) {
@@ -96,6 +94,50 @@ class AlgorhitmNotifier with ChangeNotifier {
     recursiveBubbleSort(array, n - 1);
   }
 
+  Future cocktailSort() async {
+    bool swapped = true;
+    int start = 0;
+    int end = _list.length - 1;
+    while (swapped) {
+      swapped = false;
+      for (int i = start; i < end; i++) {
+        _colors[i] = Colors.red;
+        _colors[i + 1] = Colors.red;
+        notifyListeners();
+        await Future.delayed(Duration(milliseconds: _functionDelay));
+        if (_list[i] > _list[i + 1]) {
+          var tmp = _list[i];
+          _list[i] = _list[i + 1];
+          _list[i + 1] = tmp;
+          swapped = true;
+        }
+        _colors[i] = Colors.teal;
+        _colors[i + 1] = Colors.teal;
+        notifyListeners();
+      }
+      if (!swapped) break;
+
+      swapped = false;
+      --end;
+      for (int i = end - 1; i >= start; --i) {
+        _colors[i] = Colors.red;
+        _colors[i + 1] = Colors.red;
+        notifyListeners();
+        await Future.delayed(Duration(milliseconds: _functionDelay));
+        if (_list[i] > _list[i + 1]) {
+          var tmp = _list[i];
+          _list[i] = _list[i + 1];
+          _list[i + 1] = tmp;
+          swapped = true;
+        }
+        _colors[i] = Colors.teal;
+        _colors[i + 1] = Colors.teal;
+        notifyListeners();
+      }
+      ++start;
+    }
+  }
+
   Future selectionSort() async {
     /// selection sort
     for (int i = 0; i < _list.length - 1; i++) {
@@ -120,6 +162,70 @@ class AlgorhitmNotifier with ChangeNotifier {
       _list[minindex] = _list[i];
       _list[i] = tmp;
       notifyListeners();
+    }
+  }
+
+  Future insertionSort() async {
+    int n = _list.length;
+
+    for (int i = 0; i < n; i++) {
+      await Future.delayed(Duration(milliseconds: _functionDelay));
+      int key = _list[i];
+      int j = i - 1;
+
+      while (j >= 0 && _list[j] > key) {
+        _colors[j + 1] = Colors.red;
+        _colors[j] = Colors.red;
+        await Future.delayed(Duration(milliseconds: _functionDelay));
+        notifyListeners();
+        _list[j + 1] = _list[j];
+        _colors[j + 1] = Colors.teal;
+        _colors[j] = Colors.teal;
+        j = j - 1;
+        notifyListeners();
+      }
+
+      _list[j + 1] = key;
+    }
+    notifyListeners();
+  }
+
+  Future pigeonholeSort() async {
+    int min = _list[0];
+    int max = _list[0];
+    int range, index;
+
+    for (int i = 0; i < _list.length; i++) {
+      _colors[i] = Colors.red;
+      notifyListeners();
+      await Future.delayed(Duration(milliseconds: _functionDelay));
+      if (_list[i] < min) {
+        min = _list[i];
+      }
+      if (_list[i] > max) {
+        max = _list[i];
+      }
+      _colors[i] = Colors.teal;
+      notifyListeners();
+    }
+    range = max - min + 1;
+    List<int> phole = List(range);
+    phole.fillRange(0, phole.length, 0);
+    for (int i = 0; i < _list.length; i++) {
+      _colors[i] = Colors.red;
+      await Future.delayed(Duration(milliseconds: _functionDelay));
+      phole[_list[i] - min]++;
+      notifyListeners();
+      _colors[i] = Colors.teal;
+    }
+    index = 0;
+    for (int i = 0; i < range; i++) {
+      await Future.delayed(Duration(milliseconds: _functionDelay));
+      while (phole[i]-- > 0) {
+        await Future.delayed(Duration(milliseconds: _functionDelay));
+        _list[index++] = i + min;
+        notifyListeners();
+      }
     }
   }
 

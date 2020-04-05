@@ -4,43 +4,77 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sorting/provider/algo_provider.dart';
 import 'package:sorting/styles.dart';
+import 'package:sorting/widgets/sort_val_changer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SortPages extends StatefulWidget {
   SortPages({
     @required this.title,
     @required this.shortDescription,
+    @required this.url,
   });
 
   final String title;
   final String shortDescription;
+  final String url;
 
   @override
   _SortPagesState createState() => _SortPagesState();
 }
 
 class _SortPagesState extends State<SortPages> {
-  Future getSortAlgorhitm(AlgorhitmNotifier notifier) {
-    if (widget.title == 'Bubble Sort') {
-      return notifier.bubbleSort();
-    } else if (widget.title == 'Recursive Bubble Sort') {
-      return notifier.recursiveBubbleSort(
-          notifier.getList, notifier.getListLength);
-    } else if (widget.title == 'Selection Sort') {
-      return notifier.selectionSort();
-    } else if (widget.title == 'Merge Sort') {
-      return notifier.mergeSort(
-        notifier.getList,
-        0,
-        notifier.getListLength - 1,
-      );
-    } else {
-      return null;
+  Timer _timer;
+  int _runtime = 0;
+
+  getSortAlgorhitm(AlgorhitmNotifier notifier) {
+    switch (widget.title) {
+      case 'Bubble Sort':
+        {
+          return notifier.bubbleSort();
+        }
+      case 'Recursive Bubble Sort':
+        {
+          return notifier.recursiveBubbleSort(
+            notifier.getList,
+            notifier.getListLength,
+          );
+        }
+      case 'Cocktail Sort':
+        {
+          return notifier.cocktailSort();
+        }
+      case 'Selection Sort':
+        {
+          return notifier.selectionSort();
+        }
+      case 'Insertion Sort':
+        {
+          return notifier.insertionSort();
+        }
+      case 'Merge Sort':
+        {
+          return notifier.mergeSort(
+            notifier.getList,
+            0,
+            notifier.getListLength - 1,
+          );
+        }
+      case 'Pigeonhole Sort':
+        {
+          return notifier.pigeonholeSort();
+        }
     }
   }
 
-  Timer _timer;
-
-  int _runtime = 0;
+  @override
+  void dispose() {
+    super.dispose();
+    try {
+      _timer.cancel();
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,26 +125,15 @@ class _SortPagesState extends State<SortPages> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              InkWell(
-                onTap: () {},
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'n: ${alNotifer.getListLength + 1}',
-                      style: TextStyles.body,
-                    ),
-                  ),
-                ),
+              SortValues(
+                initialValue: alNotifer.getListLength + 1,
+                onChanged: (value) => alNotifer.setListLength(value),
+                text: 'n: ${alNotifer.getListLength + 1}',
               ),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Iteration Delay: ${alNotifer.functionDelay} ms',
-                    style: TextStyles.body,
-                  ),
-                ),
+              SortValues(
+                initialValue: alNotifer.functionDelay,
+                onChanged: (value) => alNotifer.setFunctionDelay(value),
+                text: 'Iteration Delay: ${alNotifer.functionDelay} ms',
               ),
             ],
           ),
@@ -120,9 +143,7 @@ class _SortPagesState extends State<SortPages> {
             children: <Widget>[
               FlatButton(
                 child: Text('Randomize', style: TextStyles.body),
-                onPressed: () {
-                  alNotifer.generateLists();
-                },
+                onPressed: () => alNotifer.generateLists(),
               ),
               Builder(
                 builder: (context) {
@@ -141,7 +162,7 @@ class _SortPagesState extends State<SortPages> {
                       Scaffold.of(context).showSnackBar(SnackBar(
                         duration: Duration(seconds: 1),
                         content: Text(
-                          'Sorting took: $_runtime ms',
+                          'Sorting time: $_runtime ms',
                           style: TextStyles.body,
                         ),
                       ));
@@ -152,6 +173,17 @@ class _SortPagesState extends State<SortPages> {
             ],
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.teal,
+        child: Text(
+          'wiki',
+          style: TextStyles.body.copyWith(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        onPressed: () => launch(widget.url),
       ),
     );
   }
